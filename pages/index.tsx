@@ -1,44 +1,51 @@
 import Head from "next/head";
-import Signup from "../components/Signup";
+import { useState } from "react";
+import Portfolio from "../components/Portfolio";
+import { useLogin, useProvider } from "../context/UserContext";
 import styles from "../styles/Index.module.scss";
 
 export const Home = (): JSX.Element => {
+    const provider = useProvider();
+    const login = useLogin();
+
+    const [string, setString] = useState<string>("");
+
     return (
         <div className={styles.container}>
             <Head>
                 <title>Create Next App</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-
             <main>
-                <h1 className={styles.title}>
-                    Welcome to{" "}
-                    <a href="https://nextjs.org">Next.js with Magic!</a>
-                </h1>
-                <p className={styles.description}>
-                    Edit the login tool by editing{" "}
-                    <code>components/Signup</code>
-                </p>
-                <Signup />
-                <p className={styles.description}>
-                    Get started by editing <code>pages/index.tsx</code>
-                </p>
-            </main>
+                {!provider && (
+                    <div>
+                        <h1>Please Login by passing a RPC String</h1>
+                        <form
+                            onSubmit={(e) => {
+                                e.preventDefault();
+                                if (string === "") {
+                                    // Do nothing
+                                } else {
+                                    login(string);
+                                }
+                            }}
+                        >
+                            <input
+                                type="text"
+                                onChange={(e) => setString(e.target.value)}
+                            />
+                            <button type="submit">Login with RPC String</button>
+                        </form>
+                    </div>
+                )}
 
-            <footer>
-                <a
-                    href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    Powered by{" "}
-                    <img
-                        src="/vercel.svg"
-                        alt="Vercel Logo"
-                        className={styles.logo}
-                    />
-                </a>
-            </footer>
+                {provider && (
+                    <div>
+                        <h2>Portfolio here</h2>
+                        <Portfolio provider={provider} />
+                    </div>
+                )}
+            </main>
         </div>
     );
 };

@@ -36,9 +36,6 @@ yarn dev
 ```
 
 ## Architecture
-See `context/UserContext.tsx` for implementation of Login, Logout and Session Persistence
-
-See `components/Signup` for Login / Signup component
 
 
 This template was built on top of Template: NextJS Typescript Boilerplate
